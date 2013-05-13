@@ -21,6 +21,10 @@ var LanguageManager = {
 
   changeDefaultKb: function changeDefaultKb(event) {
     if (this._kbLayoutList) {
+      // Non-Latin keyboards list
+      // (retrieved from shared/resources/keyboard_layouts.json)
+      var nonLatinKeyboards = ['ar', 'el', 'he', 'ja', 'ru', 'zh-CN', 'zh-TW'];
+
       var lock = this.settings.createLock();
       // Disable all other keyboard layouts to switch to the new one
       if (this._languages) {
@@ -42,6 +46,10 @@ var LanguageManager = {
       console.log('Keyboard layout changed to ' + event.settingValue);
 
       this._currentLanguage = event.settingValue;
+      // If the currently selected language has a non-latin keyboard,
+      // activate the English keyboard as well
+      if (nonLatinKeyboards.indexOf(event.settingValue) !== -1)
+        lock.set({'keyboard.layouts.english': true});
     }
   },
 
